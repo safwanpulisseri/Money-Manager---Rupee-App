@@ -184,14 +184,14 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
           borderRadius: BorderRadius.circular(
             50,
           ),
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
               Colors.red,
               Colors.orange,
             ],
           ),
         ),
-        child: Text(
+        child: const Text(
           'Save',
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
@@ -224,7 +224,7 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
           },
           child: Text(
             'Date:${date.day}/${date.month}/${date.year}',
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 15,
             ),
@@ -344,7 +344,7 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text('Add Category'),
+                    Text('Add Category')
                   ],
                 ),
                 value: 'Add Category',
@@ -380,12 +380,44 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
           isExpanded: true,
           underline: Container(),
           onChanged: (value) {
-            setState(() {
-              selectedItem = value!;
-            });
+            setState(
+              () {
+                selectedItem = value!;
+                if (value == 'Add Category') {
+                  _showAddCategoryDialog();
+                }
+              },
+            );
           },
         ),
       ),
+    );
+  }
+
+  void _showAddCategoryDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Add Category'),
+          content: TextField(),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                //Add New Categories
+                Navigator.pop(context);
+              },
+              child: Text('Add'),
+            ),
+          ],
+        );
+      },
     );
   }
 

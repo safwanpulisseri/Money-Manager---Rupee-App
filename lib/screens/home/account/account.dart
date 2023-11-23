@@ -127,58 +127,58 @@ class ScreenAccount extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
-                      height: 25,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ScreenCreditCard()));
-                      },
-                      child: Container(
-                        width: 300,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.transparent,
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              child: Icon(
-                                Icons.credit_card,
-                                size: 30,
-                                color: Colors.white,
-                              ),
-                              height: 45,
-                              width: 55,
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      colors: [Colors.red, Colors.orange]),
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              'Cards',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          minimumSize: Size(330, 60),
-                          side: BorderSide(color: Colors.black, width: 2)),
-                    ),
+                    // SizedBox(
+                    //   height: 25,
+                    // ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => ScreenCreditCard()));
+                    //   },
+                    //   child: Container(
+                    //     width: 300,
+                    //     height: 60,
+                    //     decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(10),
+                    //       color: Colors.transparent,
+                    //     ),
+                    //     child: Row(
+                    //       children: [
+                    //         Container(
+                    //           child: Icon(
+                    //             Icons.credit_card,
+                    //             size: 30,
+                    //             color: Colors.white,
+                    //           ),
+                    //           height: 45,
+                    //           width: 55,
+                    //           decoration: BoxDecoration(
+                    //               gradient: LinearGradient(
+                    //                   colors: [Colors.red, Colors.orange]),
+                    //               borderRadius: BorderRadius.circular(10)),
+                    //         ),
+                    //         SizedBox(
+                    //           width: 20,
+                    //         ),
+                    //         Text(
+                    //           'Cards',
+                    //           style: TextStyle(
+                    //               color: Colors.black,
+                    //               fontSize: 25,
+                    //               fontWeight: FontWeight.w400),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    //   style: ElevatedButton.styleFrom(
+                    //       backgroundColor: Colors.white,
+                    //       shape: RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(10)),
+                    //       minimumSize: Size(330, 60),
+                    //       side: BorderSide(color: Colors.black, width: 2)),
+                    // ),//
                     SizedBox(
                       height: 25,
                     ),

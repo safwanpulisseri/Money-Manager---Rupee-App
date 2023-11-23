@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   curved_navigation_bar: ^1.0.3
   fl_chart: ^0.64.0
+  flutter_slidable: ^3.0.1
+  country_code_picker: ^3.0.0
   
 
 dev_dependencies:
@@ -69,6 +71,8 @@ flutter:
     - assets/Screenshot_2023-11-19_at_4.02.09_PM-removebg-preview.png
     - assets/IMG_3864.jpg
     - assets/Login_logo.png
+    - assets/intrologo-removebg-preview-2.png
+  # - assets/Logo_RupeeApp.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

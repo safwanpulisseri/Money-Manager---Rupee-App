@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:rupee_app/screens/add_category/main_adding.dart';
 import 'package:rupee_app/screens/home/account/account.dart';
 
@@ -14,11 +15,13 @@ class ScreenMainHome extends StatefulWidget {
 class _ScreenMainHomeState extends State<ScreenMainHome> {
   int _currentIndex = 0;
   late PageController _pageController;
+  late MyDataClass _value; // Assume _value is an instance of some class
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    // _value = MyDataClass(id: 'some_id');
   }
 
   @override
@@ -201,30 +204,31 @@ class _ScreenMainHomeState extends State<ScreenMainHome> {
             child: ListView.builder(
               itemCount: 4,
               itemBuilder: (context, index) {
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: AssetImage(categoryImages[index]),
-                  ),
-                  title: Text(
-                    'Transaction $index',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  subtitle: Text('Oct 22, 2021'),
-                  trailing: Text(
-                    '+10.000',
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 20,
-                    ),
-                  ),
-                  onTap: () {
-                    // Action to perform when the item is tapped
-                  },
-                );
+                return list_of_categories(
+                    Key('transaction_$index'), index); //ListTile(
+                //   leading: CircleAvatar(
+                //     backgroundColor: Colors.transparent,
+                //     backgroundImage: AssetImage(categoryImages[index]),
+                //   ),
+                //   title: Text(
+                //     'Transaction $index',
+                //     style: TextStyle(
+                //       fontSize: 20,
+                //       fontWeight: FontWeight.w500,
+                //     ),
+                //   ),
+                //   subtitle: Text('Oct 22, 2021'),
+                //   trailing: Text(
+                //     '+10.000',
+                //     style: TextStyle(
+                //       color: Colors.green,
+                //       fontSize: 20,
+                //     ),
+                //   ),
+                //   onTap: () {
+                //     // Action to perform when the item is tapped
+                //   },
+                // );
               },
             ),
           ),
@@ -493,25 +497,8 @@ class _ScreenMainHomeState extends State<ScreenMainHome> {
                   child: ListView.builder(
                     itemCount: 4,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage(categoryImages[index]),
-                        ),
-                        title: Text(
-                          'Transaction $index',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500),
-                        ),
-                        subtitle: Text('Oct 22, 2021'),
-                        trailing: Text(
-                          '+10.000',
-                          style: TextStyle(color: Colors.green, fontSize: 20),
-                        ),
-                        onTap: () {
-                          // Action to perform when the item is tapped
-                        },
-                      );
+                      final transactionKey = Key('transaction_$index');
+                      return list_of_categories(transactionKey, index);
                     },
                   ),
                 ),
@@ -519,6 +506,49 @@ class _ScreenMainHomeState extends State<ScreenMainHome> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Slidable list_of_categories(Key transactionKey, int index) {
+    return Slidable(
+      key: transactionKey,
+      startActionPane: ActionPane(
+        motion: ScrollMotion(),
+        children: [
+          SlidableAction(
+            backgroundColor: Colors.red,
+            onPressed: (ctx) {},
+            icon: Icons.delete,
+            label: 'Delete',
+          ),
+        ],
+      ),
+      endActionPane: ActionPane(motion: ScrollMotion(), children: [
+        SlidableAction(
+          backgroundColor: Colors.blue,
+          onPressed: (ctx) {},
+          icon: Icons.edit,
+          label: 'Edit',
+        )
+      ]),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          backgroundImage: AssetImage(categoryImages[index]),
+        ),
+        title: Text(
+          'Transaction $index',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+        subtitle: Text('Oct 22, 2021'),
+        trailing: Text(
+          '+10.000',
+          style: TextStyle(color: Colors.green, fontSize: 20),
+        ),
+        onTap: () {
+          // Action to perform when the item is tapped
+        },
       ),
     );
   }
@@ -536,4 +566,9 @@ class _ScreenMainHomeState extends State<ScreenMainHome> {
     'Year',
   ]; //
   int index_color = 0;
+}
+
+class MyDataClass {
+  final String id;
+  MyDataClass({required this.id});
 }
