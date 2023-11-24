@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:rupee_app/screens/home/main_home.dart';
 
@@ -334,32 +335,59 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
         ),
         child: DropdownButton<String>(
           value: selectedItem,
-          items: _itemsOfExpense
-              .asMap()
-              .entries
-              .map(
-                (entry) => DropdownMenuItem(
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        child: Image.asset(expenseImages[entry.key]),
+          items: selectedRadio == 'Option 1' // Check if it's Income
+              ? _itemsOfIncome
+                  .asMap()
+                  .entries
+                  .map(
+                    (entry) => DropdownMenuItem(
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            child: Image.asset(incomeImages[entry.key]),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            entry.value,
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        width: 10,
+                      value: entry.value,
+                    ),
+                  )
+                  .toList()
+              : _itemsOfExpense // It's Expense
+                  .asMap()
+                  .entries
+                  .map(
+                    (entry) => DropdownMenuItem(
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            child: Image.asset(expenseImages[entry.key]),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            entry.value,
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        entry.value,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                  value: entry.value,
-                ),
-              )
-              .toList()
+                      value: entry.value,
+                    ),
+                  )
+                  .toList()
             ..add(
               DropdownMenuItem(
                 child: Row(
@@ -368,36 +396,60 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text('Add Category')
+                    Text('Add Category'),
                   ],
                 ),
                 value: 'Add Category',
               ),
             ),
           selectedItemBuilder: (context) {
-            return _itemsOfExpense
-                .asMap()
-                .entries
-                .map(
-                  (entry) => Row(
-                    children: [
-                      Container(
-                        width: 42,
-                        child: Image.asset(expenseImages[entry.key]),
+            return selectedRadio == 'Option 1' // Check if it's Income
+                ? _itemsOfIncome
+                    .asMap()
+                    .entries
+                    .map(
+                      (entry) => Row(
+                        children: [
+                          Container(
+                            width: 42,
+                            child: Image.asset(incomeImages[entry.key]),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            entry.value,
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        width: 20,
+                    )
+                    .toList()
+                : _itemsOfExpense // It's Expense
+                    .asMap()
+                    .entries
+                    .map(
+                      (entry) => Row(
+                        children: [
+                          Container(
+                            width: 42,
+                            child: Image.asset(expenseImages[entry.key]),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            entry.value,
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        entry.value,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      )
-                    ],
-                  ),
-                )
-                .toList();
+                    )
+                    .toList();
           },
           hint: Text('Category'),
           dropdownColor: Colors.white,

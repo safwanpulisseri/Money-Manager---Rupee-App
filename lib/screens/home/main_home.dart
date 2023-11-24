@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:rupee_app/screens/add_category/main_adding.dart';
 import 'package:rupee_app/screens/home/account/account.dart';
+import 'package:rupee_app/screens/home/see_all.dart';
 
 class ScreenMainHome extends StatefulWidget {
   const ScreenMainHome({Key? key}) : super(key: key);
@@ -482,7 +483,13 @@ class _ScreenMainHomeState extends State<ScreenMainHome> {
                             minimumSize: Size(0, 30),
                             backgroundColor: Colors.grey[200],
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ScreenSeeAllTransaction()));
+                          },
                           child: Text(
                             'See all',
                             style: TextStyle(color: Colors.black),
