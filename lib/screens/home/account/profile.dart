@@ -1,10 +1,9 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:rupee_app/screens/home/main_home.dart';
-import 'package:rupee_app/screens/introduction/login.dart';
+import 'package:rupee_app/screens/home/account/account.dart';
 
-class ScreenSignup extends StatelessWidget {
-  const ScreenSignup({super.key});
+class ScreenEditProfile extends StatelessWidget {
+  const ScreenEditProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class ScreenSignup extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ScreenLogin()));
+                                builder: (context) => ScreenAccount()));
                       },
                       child: Row(
                         children: [
@@ -232,13 +231,13 @@ class ScreenSignup extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ScreenMainHome()));
+                                  builder: (context) => ScreenAccount()));
                         },
                         child: Text(
-                          'Sign up',
+                          'Update',
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w700,

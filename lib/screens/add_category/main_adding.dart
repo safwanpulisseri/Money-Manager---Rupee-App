@@ -29,6 +29,18 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
     "Transfer",
     "Education",
   ];
+  final List<String> _itemsOfExpense = [
+    "Bills",
+    "Health",
+    "Shopping",
+    "Recharge",
+  ];
+  final List<String> _itemsOfIncome = [
+    "Wages",
+    "Pension",
+    "Bonus",
+    "Divident",
+  ];
   int index = 0;
 
   @override
@@ -47,6 +59,18 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
     'assets/Screenshot_2023-11-19_at_4.01.58_PM-removebg-preview.png',
     'assets/Screenshot_2023-11-19_at_4.02.04_PM-removebg-preview.png',
     'assets/Screenshot_2023-11-19_at_4.02.09_PM-removebg-preview.png',
+  ];
+  List<String> expenseImages = [
+    'assets/Bills1.png',
+    'assets/Bills2.png',
+    'assets/Bills3.png',
+    'assets/Bills4.png',
+  ];
+  List<String> incomeImages = [
+    'assets/Income1.png',
+    'assets/Income2.png',
+    'assets/Icome3.png',
+    'assets/Income4.png',
   ];
   @override
   Widget build(BuildContext context) {
@@ -104,7 +128,7 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
           SizedBox(
             height: 20,
           ),
-          name(),
+          categories(),
           SizedBox(
             height: 20,
           ),
@@ -295,7 +319,7 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
     );
   }
 
-  Padding name() {
+  Padding categories() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
@@ -310,7 +334,7 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
         ),
         child: DropdownButton<String>(
           value: selectedItem,
-          items: _item
+          items: _itemsOfExpense
               .asMap()
               .entries
               .map(
@@ -319,7 +343,7 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
                     children: [
                       Container(
                         width: 40,
-                        child: Image.asset(categoryImages2[entry.key]),
+                        child: Image.asset(expenseImages[entry.key]),
                       ),
                       SizedBox(
                         width: 10,
@@ -351,7 +375,7 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
               ),
             ),
           selectedItemBuilder: (context) {
-            return _item
+            return _itemsOfExpense
                 .asMap()
                 .entries
                 .map(
@@ -359,7 +383,7 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
                     children: [
                       Container(
                         width: 42,
-                        child: Image.asset(categoryImages2[entry.key]),
+                        child: Image.asset(expenseImages[entry.key]),
                       ),
                       SizedBox(
                         width: 20,

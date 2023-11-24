@@ -3,7 +3,9 @@ import 'package:rupee_app/screens/home/account/about_us.dart';
 import 'package:rupee_app/screens/home/account/credit_card.dart';
 import 'package:rupee_app/screens/home/account/how_to_use.dart';
 import 'package:rupee_app/screens/home/account/privacy_policy.dart';
+import 'package:rupee_app/screens/home/account/profile.dart';
 import 'package:rupee_app/screens/home/main_home.dart';
+import 'package:rupee_app/screens/introduction/intro.dart';
 
 class ScreenAccount extends StatelessWidget {
   const ScreenAccount({super.key});
@@ -97,18 +99,26 @@ class ScreenAccount extends StatelessWidget {
                         Row(
                           children: [Text('name123@gmail.com')],
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              'Edit Profile',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            )
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ScreenEditProfile()));
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                'Edit Profile',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -382,7 +392,12 @@ class ScreenAccount extends StatelessWidget {
                       height: 25,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ScreenIntro()));
+                      },
                       child: Container(
                         width: 300,
                         height: 60,
