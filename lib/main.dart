@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rupee_app/screens/home/main_home.dart';
 import 'package:rupee_app/screens/introduction/splash.dart';
 
-void main() {
+Future<void> main() async {
+  Hive.initFlutter();
   runApp(const MyApp());
 }
 

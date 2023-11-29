@@ -8,10 +8,10 @@ class CategoryModel {
     required this.imagePath,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'imagePath': imagePath,
-    };
-  }
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'name': name,
+  //     'imagePath': imagePath,
+  //   };
+  // }
 }
