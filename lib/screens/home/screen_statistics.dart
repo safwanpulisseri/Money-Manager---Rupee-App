@@ -118,16 +118,16 @@ class _ScreenStatisticsState extends State<ScreenStatistics> {
             ),
           ),
           // List of Top Transactions
-          Expanded(
-            child: ListView.builder(
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return ScreenList(
-                  index: index,
-                ); // Assuming that the `transactionKey` and `index` are not needed in the constructor.
-              },
-            ),
-          ),
+          // Expanded(
+          //   child: ListView.builder(
+          //     itemCount: 4,
+          //     itemBuilder: (context, index) {
+          //       return ScreenList(
+          //         index: index,
+          //       ); // Assuming that the `transactionKey` and `index` are not needed in the constructor.
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );

@@ -2,6 +2,7 @@
 //import 'dart:ffi';
 import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:rupee_app/controller/db_functions.dart';
 //import 'package:rupee_app/controller/db_functions.dart';
 import 'package:rupee_app/models/category.dart';
 import 'package:rupee_app/models/transaction.dart';
@@ -18,7 +19,9 @@ class ScreenMainAdding extends StatefulWidget {
 
 class _ScreenMainAddingState extends State<ScreenMainAdding> {
   String selectedRadio = 'Option 1';
+
   Future<void> _saveTransaction() async {
+    print('in save');
     // Retrieve data from user input
     final double amount = double.parse(amount_C.text);
     final String description = explain_C.text;
@@ -31,20 +34,10 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
       amount: amount,
       description: description,
       date: date,
-      category: CategoryModel(
-          name: category,
-          imagePath: ""), // You might want to add imagePath logic
+      category: CategoryModel(name: category, imagePath: ""),
     );
-    // Save the transaction to the database
-    //await DbFunctions.addTransaction(newTransaction);
-
-    // Navigate back to the home page
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ScreenMainHome(),
-      ),
-    );
+    await addTransaction(newTransaction);
+    print('adding complete');
   }
 
   void _handleRadioValueChanged(String value) {
@@ -60,12 +53,6 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
   FocusNode ex = FocusNode();
   final TextEditingController amount_C = TextEditingController();
   FocusNode amount = FocusNode();
-  // final List<String> _item = [
-  //   "Food",
-  //   "Transportation",
-  //   "Transfer",
-  //   "Education",
-  // ];
   final List<String> _itemsOfExpense = [
     "Bills",
     "Health",
@@ -236,20 +223,14 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
 
   GestureDetector save_button() {
     return GestureDetector(
-      onTap: () {
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => ScreenMainHome()));
-        //     // Save the transaction
-        // // This is where you add your logic to save the transaction
-        // // For example, you can use your database functions
-        // DbFunctions.addTransaction(TransactionModel(
-        //   amount: double.parse(amount_C.text),
-        //   description: explain_C.text,
-        //   date: date,
-        // ));
-
-        // // Notify the home page that a new transaction has been added
-        // widget.onTransactionAdded();
+      onTap: () async {
+        await _saveTransaction();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ScreenMainHome(),
+          ),
+        );
       },
       child: Container(
         alignment: Alignment.center,

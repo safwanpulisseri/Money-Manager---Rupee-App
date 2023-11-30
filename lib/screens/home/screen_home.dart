@@ -1,14 +1,24 @@
+// Import necessary libraries
 import 'package:flutter/material.dart';
-//import 'package:flutter_slidable/flutter_slidable.dart';
-//import 'package:rupee_app/screens/add_category/main_adding.dart';
+import 'package:rupee_app/controller/db_functions.dart';
+import 'package:rupee_app/models/category.dart';
+import 'package:rupee_app/models/transaction.dart';
 import 'package:rupee_app/screens/home/account/account.dart';
 import 'package:rupee_app/screens/home/see_all.dart';
-//import 'package:rupee_app/controller/db_functions.dart';
-//import 'package:rupee_app/models/transaction.dart';
-import 'package:rupee_app/screens/widgets/list.dart';
 
-class ScreenHome extends StatelessWidget {
+class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
+
+  @override
+  State<ScreenHome> createState() => _ScreenHomeState();
+}
+
+class _ScreenHomeState extends State<ScreenHome> {
+  @override
+  void initState() {
+    super.initState();
+    getAllTransactions(); // Fetch transactions when the screen initializes
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -279,15 +289,24 @@ class ScreenHome extends StatelessWidget {
                 // List of Recent Transactions
                 Expanded(
                   child: ListView.builder(
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      final transactionKey = Key('transaction_$index');
-                      return ScreenList(
-                        index: index,
-                      ); // Assuming that the `transactionKey` and `index` are not needed in the constructor.
-                    },
-                  ),
-                ),
+                      itemCount: transactionListNotifier.value.length,
+                      itemBuilder: (context, index) {
+                        final TransactionModel transaction =
+                            transactionListNotifier.value[index];
+                        final CategoryModel category = transaction.category;
+                        final DateTime date = transaction.date;
+
+                        return ListTile(
+                          title: Text(category.name),
+                          subtitle:
+                              Text('${date.day}/${date.month}/${date.year}'),
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage(category.imagePath),
+                          ),
+                          trailing: Text('${transaction.amount}'),
+                        );
+                      }),
+                )
               ],
             ),
           ),

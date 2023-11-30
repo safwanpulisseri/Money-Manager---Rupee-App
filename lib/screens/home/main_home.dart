@@ -22,14 +22,14 @@ class _ScreenMainHomeState extends State<ScreenMainHome> {
   late PageController _pageController;
   late MyDataClass _value; // Assume _value is an instance of some class
 
-  Future<void> _loadTransactions() async {
-    transactions = await DbFunctions.getTransactions();
-    setState(() {});
-  }
+  // Future<void> _loadTransactions() async {
+  //   transactions = await DbFunctions.getTransactions();
+  //   setState(() {});
+  // }
 
   void _onTransactionAdded() {
     // Callback function to reload transactions when a new one is added
-    _loadTransactions();
+    // _loadTransactions();
   }
 
   @override
@@ -37,7 +37,7 @@ class _ScreenMainHomeState extends State<ScreenMainHome> {
     super.initState();
     _pageController = PageController();
     _value = MyDataClass(id: 'some_id');
-    _loadTransactions(); // Call _loadTransactions here if you want to load transactions when the screen initializes
+    // _loadTransactions(); // Call _loadTransactions here if you want to load transactions when the screen initializes
   }
 
   @override
@@ -48,6 +48,7 @@ class _ScreenMainHomeState extends State<ScreenMainHome> {
 
   @override
   Widget build(BuildContext context) {
+    getAllTransactions();
     return Scaffold(
       body: SizedBox.expand(
         child: PageView(

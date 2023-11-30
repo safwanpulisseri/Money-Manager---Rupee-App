@@ -1,16 +1,22 @@
 // db_functions.dart
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:rupee_app/models/transaction.dart';
 
-class DbFunctions {
-  static Future<void> addTransaction(
-      TransactionModel transaction, String s) async {
-    final box = await Hive.openBox<TransactionModel>("transactions");
-    box.add(transaction);
-  }
+ValueNotifier<List<TransactionModel>> transactionListNotifier =
+    ValueNotifier([]);
 
-  static Future<List<TransactionModel>> getTransactions() async {
-    final database = await Hive.openBox<TransactionModel>("transactions");
-    return database.values.toList();
-  }
+addTransaction(TransactionModel value) async {
+  final transactionDB = await Hive.openBox<TransactionModel>('transaction_db');
+  await transactionDB.add(value);
+  transactionListNotifier.value.add(value);
+  print('DATA ADDED');
+  transactionListNotifier.notifyListeners();
+}
+
+Future<void> getAllTransactions() async {
+  final transactionDB = await Hive.openBox<TransactionModel>('transaction_db');
+  transactionListNotifier.value.clear();
+  transactionListNotifier.value.addAll(transactionDB.values);
+  transactionListNotifier.notifyListeners();
 }

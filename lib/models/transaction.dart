@@ -23,14 +23,4 @@ class TransactionModel {
     required this.date,
     required this.category,
   });
-
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     'amount': amount,
-  //     'description': description,
-  //     'date': date,
-  //     'category':
-  //         category.toMap(), // Assuming CategoryModel has a toMap() method
-  //   };
-  // }
 }
