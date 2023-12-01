@@ -1,4 +1,6 @@
 // models/user.dart
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -19,7 +21,7 @@ class UserModel {
   final String password;
 
   @HiveField(4)
-  final Image image;
+  final Uint8List image;
 
   UserModel(
       {required this.name,

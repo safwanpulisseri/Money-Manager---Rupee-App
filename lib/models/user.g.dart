@@ -21,7 +21,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       email: fields[1] as String,
       country: fields[2] as String,
       password: fields[3] as String,
-      image: fields[4] as Image,
+      image: fields[4] as Uint8List,
     );
   }
 

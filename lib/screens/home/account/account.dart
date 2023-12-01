@@ -74,12 +74,12 @@ class ScreenAccount extends StatelessWidget {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   border:
-                                      Border.all(width: 5, color: Colors.black),
+                                      Border.all(width: 3, color: Colors.black),
                                   color: Colors.white,
                                   boxShadow: [
                                     BoxShadow(
-                                        offset: Offset(5, 5),
-                                        color: Colors.white)
+                                        offset: Offset(2, 2),
+                                        color: Colors.grey)
                                   ]),
                             )
                           ],

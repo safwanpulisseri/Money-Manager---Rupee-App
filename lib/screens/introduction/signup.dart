@@ -1,15 +1,28 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rupee_app/models/user.dart';
 import 'package:rupee_app/screens/home/main_home.dart';
 import 'package:rupee_app/screens/introduction/login.dart';
 
-class ScreenSignup extends StatelessWidget {
-  ScreenSignup({super.key});
+class ScreenSignup extends StatefulWidget {
+  const ScreenSignup({Key? key}) : super(key: key);
 
+  @override
+  _ScreenSignupState createState() => _ScreenSignupState();
+}
+
+class _ScreenSignupState extends State<ScreenSignup> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  String _selectedCountryCode = 'IN';
+  File? _selectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +43,11 @@ class ScreenSignup extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ScreenLogin()));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ScreenLogin(),
+                          ),
+                        );
                       },
                       child: Row(
                         children: [
@@ -59,8 +74,9 @@ class ScreenSignup extends StatelessWidget {
               ),
               ClipRRect(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30)),
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
                 child: Container(
                   color: Colors.white,
                   height: 780,
@@ -69,77 +85,62 @@ class ScreenSignup extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (ctx) {
-                              return AlertDialog(
-                                backgroundColor: Colors.black,
-                                content: Text(
-                                  'Choose Image from  ',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                                actions: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            fromGallery();
-                                            Navigator.of(context).pop();
-                                          },
-                                          icon: Icon(Icons.image,
-                                              color: Colors.orange
-                                                  .withAlpha(500))),
-                                      IconButton(
-                                          onPressed: () {
-                                            fromCamera();
-                                            Navigator.of(context).pop();
-                                          },
-                                          icon: Icon(Icons.camera_alt,
-                                              color:
-                                                  Colors.orange.withAlpha(500)))
-                                    ],
-                                  )
-                                ],
-                              );
-                            },
-                          );
+                        onTap: () async {
+                          _pickImage();
                         },
                         child: Column(
                           children: [
-                            // CircleAvatar(
-                            //     radius: 80,
-                            //     backgroundImage:
-                            //         AssetImage('assets/IMG_3864.jpg')),
-                            Container(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(
-                                  'assets/profile.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              height: 100,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  width: 5,
-                                  color: Colors.black,
-                                ),
-                                borderRadius: BorderRadius.circular(25),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.white,
-                                    offset: Offset(5, 5),
+                            _selectedImage != null
+                                ? Container(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.file(
+                                        _selectedImage!,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        width: 5,
+                                        color: Colors.black,
+                                      ),
+                                      borderRadius: BorderRadius.circular(25),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white,
+                                          offset: Offset(5, 5),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Container(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.asset(
+                                        'assets/profile.png',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        width: 5,
+                                        color: Colors.black,
+                                      ),
+                                      borderRadius: BorderRadius.circular(25),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white,
+                                          offset: Offset(5, 5),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
                             Text('Add your photo'),
                           ],
                         ),
@@ -156,8 +157,7 @@ class ScreenSignup extends StatelessWidget {
                           ),
                           child: TextField(
                             controller: _nameController,
-                            style:
-                                TextStyle(fontSize: 20), // Adjust the text size
+                            style: TextStyle(fontSize: 20),
                             decoration: InputDecoration(
                               hintText: 'Enter your name',
                               border: OutlineInputBorder(
@@ -179,8 +179,7 @@ class ScreenSignup extends StatelessWidget {
                           ),
                           child: TextField(
                             controller: _emailController,
-                            style:
-                                TextStyle(fontSize: 20), // Adjust the text size
+                            style: TextStyle(fontSize: 20),
                             decoration: InputDecoration(
                               hintText: 'Enter your Email',
                               border: OutlineInputBorder(
@@ -204,38 +203,7 @@ class ScreenSignup extends StatelessWidget {
                               width: 2,
                             ),
                           ),
-                          child: CountryCodePicker(
-                            onChanged: (CountryCode countryCode) {
-                              print("New Country selected: " +
-                                  countryCode.toString());
-                            },
-                            initialSelection:
-                                'IN', // Initial selected country code
-                            favorite: [
-                              '+91',
-                              'US'
-                            ], // Optional. To show only specific countries
-                            showCountryOnly:
-                                true, // Set to true to only show country names without flags
-                            showFlagMain:
-                                true, // Set to false to hide the main flag
-                            showFlagDialog:
-                                true, // Set to false to hide the flag dialog
-                            builder: (CountryCode? countryCode) {
-                              return Row(children: [
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Image.asset(countryCode!.flagUri!,
-                                    package: 'country_code_picker'),
-                                SizedBox(width: 8.0),
-                                Text(
-                                  countryCode.name!,
-                                  style: TextStyle(fontSize: 20),
-                                )
-                              ]);
-                            },
-                          ),
+                          child: _buildCountryCodePicker(),
                         ),
                       ),
                       SizedBox(
@@ -250,8 +218,8 @@ class ScreenSignup extends StatelessWidget {
                           ),
                           child: TextField(
                             controller: _passwordController,
-                            style:
-                                TextStyle(fontSize: 20), // Adjust the text size
+                            style: TextStyle(fontSize: 20),
+                            obscureText: true,
                             decoration: InputDecoration(
                               hintText: 'Enter your Password',
                               border: OutlineInputBorder(
@@ -265,24 +233,23 @@ class ScreenSignup extends StatelessWidget {
                         height: 30,
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ScreenMainHome()));
+                        onPressed: () async {
+                          await _onSignupButtonClicked(context);
                         },
                         child: Text(
                           'Sign up',
                           style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 245, 91, 1),
                           minimumSize: Size(200, 50),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
                       ),
                     ],
@@ -296,11 +263,105 @@ class ScreenSignup extends StatelessWidget {
     );
   }
 
-  Future<void> fromGallery() async {
-    final img1 = await ImagePicker().pickImage(source: ImageSource.gallery);
+  Widget _buildCountryCodePicker() {
+    return CountryCodePicker(
+      onChanged: (CountryCode countryCode) {
+        setState(() {
+          _selectedCountryCode = countryCode.code!;
+        });
+      },
+      initialSelection: _selectedCountryCode,
+      favorite: ['+91', 'US'],
+      showCountryOnly: true,
+      showFlagMain: true,
+      showFlagDialog: true,
+      builder: (CountryCode? countryCode) {
+        return Row(
+          children: [
+            SizedBox(width: 15),
+            Image.asset(
+              countryCode!.flagUri!,
+              package: 'country_code_picker',
+            ),
+            SizedBox(width: 8.0),
+            Text(
+              countryCode.name!,
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  Future<void> fromCamera() async {
-    final img1 = await ImagePicker().pickImage(source: ImageSource.camera);
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _onSignupButtonClicked(BuildContext context) async {
+    final String name = _nameController.text.trim();
+    final String email = _emailController.text.trim();
+    final String password = _passwordController.text.trim();
+
+    if (_selectedImage == null ||
+        name.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty) {
+      // Show an error message or handle the case where any field is empty
+      return;
+    }
+
+    // Convert File to Uint8List
+    final Uint8List imageData = await _selectedImage!.readAsBytes();
+
+    // Save user data to Hive
+    final UserModel user = UserModel(
+      name: name,
+      email: email,
+      country: _selectedCountryCode,
+      password: password,
+      image: imageData,
+    );
+
+    final Box<UserModel> userBox = await Hive.openBox<UserModel>('users');
+    await userBox.add(user);
+
+    // Check if the user has been added to the database
+    if (userBox.containsKey(userBox.keyAt(userBox.length - 1))) {
+      // User added successfully
+      print('User added to the database: $user');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.green,
+        content: Text('User added successfully!'),
+        duration: Duration(seconds: 2),
+      ));
+
+      // Navigate to the home screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ScreenMainHome(),
+        ),
+      );
+    } else {
+      // Failed to add user
+      print('Failed to add user to the database');
+      // Show an error message to the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to Add user. Please try again.'),
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

@@ -116,14 +116,14 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   border: Border.all(
-                                    width: 5,
+                                    width: 3,
                                     color: Colors.black,
                                   ),
                                   borderRadius: BorderRadius.circular(25),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.white,
-                                      offset: Offset(5, 5),
+                                      color: Colors.grey,
+                                      offset: Offset(2, 2),
                                     ),
                                   ],
                                 ),

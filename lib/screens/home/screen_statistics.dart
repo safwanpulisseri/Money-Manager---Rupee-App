@@ -18,6 +18,7 @@ class _ScreenStatisticsState extends State<ScreenStatistics> {
 
   Container screenStatisticsWidget(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: Column(
         children: [
           SizedBox(
