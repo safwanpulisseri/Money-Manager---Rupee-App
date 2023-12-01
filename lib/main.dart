@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rupee_app/models/category.dart';
 import 'package:rupee_app/models/transaction.dart';
+import 'package:rupee_app/models/user.dart';
 import 'package:rupee_app/screens/home/main_home.dart';
 import 'package:rupee_app/screens/introduction/splash.dart';
 
@@ -13,10 +14,11 @@ Future<void> main() async {
   // }
   await Hive.initFlutter();
   if (!Hive.isAdapterRegistered(TransactionModelAdapter().typeId) &&
-      !Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
+      !Hive.isAdapterRegistered(CategoryModelAdapter().typeId) &&
+      !Hive.isAdapterRegistered(UserModelAdapter().typeId)) {
     Hive.registerAdapter(TransactionModelAdapter());
-    Hive.registerAdapter(
-        CategoryModelAdapter()); // Register the adapter for CategoryModel
+    Hive.registerAdapter(CategoryModelAdapter());
+    Hive.registerAdapter(UserModelAdapter());
   }
 
   await Hive.openBox<TransactionModel>('transaction_db');
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ScreenMainHome(),
+      home: ScreenSplash(),
     );
   }
 }

@@ -58,7 +58,15 @@ class _ScreenHomeState extends State<ScreenHome> {
                         Row(
                           children: [
                             Text(
-                              '₹0.0',
+                              '₹', //RUPEE SYMPOL
+                              style: TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              '0.0',
                               style: TextStyle(
                                 fontSize: 40,
                                 fontWeight: FontWeight.w900,
@@ -297,13 +305,20 @@ class _ScreenHomeState extends State<ScreenHome> {
                         final DateTime date = transaction.date;
 
                         return ListTile(
-                          title: Text(category.name),
+                          title: Text(
+                            category.name,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w500),
+                          ),
                           subtitle:
                               Text('${date.day}/${date.month}/${date.year}'),
                           leading: CircleAvatar(
                             backgroundImage: AssetImage(category.imagePath),
                           ),
-                          trailing: Text('${transaction.amount}'),
+                          trailing: Text(
+                            '${transaction.amount}',
+                            style: TextStyle(fontSize: 20),
+                          ),
                         );
                       }),
                 )

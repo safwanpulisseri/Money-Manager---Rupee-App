@@ -1,4 +1,5 @@
 // db_functions.dart
+//Transaction's CRUD operation
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:rupee_app/models/transaction.dart';

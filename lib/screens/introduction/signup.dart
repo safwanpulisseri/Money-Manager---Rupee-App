@@ -1,10 +1,15 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rupee_app/screens/home/main_home.dart';
 import 'package:rupee_app/screens/introduction/login.dart';
 
 class ScreenSignup extends StatelessWidget {
-  const ScreenSignup({super.key});
+  ScreenSignup({super.key});
+
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,35 +70,80 @@ class ScreenSignup extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          //
+                          showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return AlertDialog(
+                                backgroundColor: Colors.black,
+                                content: Text(
+                                  'Choose Image from  ',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                                actions: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            fromGallery();
+                                            Navigator.of(context).pop();
+                                          },
+                                          icon: Icon(Icons.image,
+                                              color: Colors.orange
+                                                  .withAlpha(500))),
+                                      IconButton(
+                                          onPressed: () {
+                                            fromCamera();
+                                            Navigator.of(context).pop();
+                                          },
+                                          icon: Icon(Icons.camera_alt,
+                                              color:
+                                                  Colors.orange.withAlpha(500)))
+                                    ],
+                                  )
+                                ],
+                              );
+                            },
+                          );
                         },
-                        child: Container(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.asset(
-                              'assets/IMG_3864.jpg',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                              width: 5,
-                              color: Colors.black,
-                            ),
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white,
-                                offset: Offset(5, 5),
+                        child: Column(
+                          children: [
+                            // CircleAvatar(
+                            //     radius: 80,
+                            //     backgroundImage:
+                            //         AssetImage('assets/IMG_3864.jpg')),
+                            Container(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.asset(
+                                  'assets/profile.png',
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ],
-                          ),
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  width: 5,
+                                  color: Colors.black,
+                                ),
+                                borderRadius: BorderRadius.circular(25),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.white,
+                                    offset: Offset(5, 5),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text('Add your photo'),
+                          ],
                         ),
                       ),
-                      Text('Add your photo'),
                       SizedBox(
                         height: 30,
                       ),
@@ -105,6 +155,7 @@ class ScreenSignup extends StatelessWidget {
                             border: Border.all(color: Colors.black),
                           ),
                           child: TextField(
+                            controller: _nameController,
                             style:
                                 TextStyle(fontSize: 20), // Adjust the text size
                             decoration: InputDecoration(
@@ -127,6 +178,7 @@ class ScreenSignup extends StatelessWidget {
                             border: Border.all(color: Colors.black),
                           ),
                           child: TextField(
+                            controller: _emailController,
                             style:
                                 TextStyle(fontSize: 20), // Adjust the text size
                             decoration: InputDecoration(
@@ -141,25 +193,6 @@ class ScreenSignup extends StatelessWidget {
                       SizedBox(
                         height: 30,
                       ),
-                      // Padding(
-                      //   padding: EdgeInsets.symmetric(horizontal: 25),
-                      //   child: Container(
-                      //     decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(10),
-                      //       border: Border.all(color: Colors.black),
-                      //     ),
-                      //     child: TextField(
-                      //       style:
-                      //           TextStyle(fontSize: 20), // Adjust the text size
-                      //       decoration: InputDecoration(
-                      //         hintText: 'Enter your Country',
-                      //         border: OutlineInputBorder(
-                      //           borderRadius: BorderRadius.circular(10),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 25),
                         child: Container(
@@ -216,6 +249,7 @@ class ScreenSignup extends StatelessWidget {
                             border: Border.all(color: Colors.black),
                           ),
                           child: TextField(
+                            controller: _passwordController,
                             style:
                                 TextStyle(fontSize: 20), // Adjust the text size
                             decoration: InputDecoration(
@@ -260,5 +294,13 @@ class ScreenSignup extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> fromGallery() async {
+    final img1 = await ImagePicker().pickImage(source: ImageSource.gallery);
+  }
+
+  Future<void> fromCamera() async {
+    final img1 = await ImagePicker().pickImage(source: ImageSource.camera);
   }
 }
