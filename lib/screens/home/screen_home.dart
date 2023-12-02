@@ -1,6 +1,7 @@
 // Import necessary libraries
 import 'package:flutter/material.dart';
 import 'package:rupee_app/controller/db_functions.dart';
+import 'package:rupee_app/controller/db_user.dart';
 import 'package:rupee_app/models/category.dart';
 import 'package:rupee_app/models/transaction.dart';
 import 'package:rupee_app/screens/home/account/account.dart';
@@ -14,10 +15,29 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
+  late String _userName = '';
+  late String _userPhoto = '';
+
+  Future<void> _getUserInfoFromDatabase() async {
+    try {
+      // Fetch user information from the database
+      Map<String, dynamic> userInfo =
+          await DbFunctions.getUserInfoFromDatabase();
+
+      setState(() {
+        _userName = userInfo['name'] ?? '';
+        _userPhoto = userInfo['photo'] ?? '';
+      });
+    } catch (e) {
+      print('Error fetching user information: $e');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getAllTransactions(); // Fetch transactions when the screen initializes
+    _getUserInfoFromDatabase();
   }
 
   @override
@@ -49,7 +69,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                         Row(
                           children: [
                             Text(
-                              'Hi, Safwan',
+                              'Hi, $_userName', //User's name
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ),
@@ -107,7 +127,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: Image.asset(
-                                    'assets/IMG_3864.jpg',
+                                    _userPhoto, //User's Photo
                                     fit: BoxFit.cover,
                                   ),
                                 ),

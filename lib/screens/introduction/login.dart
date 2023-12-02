@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rupee_app/controller/db_functions.dart';
+import 'package:rupee_app/controller/db_user.dart';
 import 'package:rupee_app/screens/home/main_home.dart';
 import 'package:rupee_app/screens/introduction/signup.dart';
 // import 'package:flutter_application_3/screens/Indroduction/signup.dart';
@@ -13,6 +15,12 @@ class ScreenLogin extends StatefulWidget {
 }
 
 class _ScreenLoginState extends State<ScreenLogin> {
+  final _usernameController = TextEditingController();
+  final _userpasswordController = TextEditingController();
+
+  bool _showUsernameError = false;
+  bool _showPasswordError = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,13 +90,24 @@ class _ScreenLoginState extends State<ScreenLogin> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.black),
+                            border: Border.all(
+                                color: _showUsernameError
+                                    ? Colors.red
+                                    : Colors.transparent),
                           ),
                           child: TextField(
-                            style:
-                                TextStyle(fontSize: 20), // Adjust the text size
+                            controller: _usernameController,
+                            style: TextStyle(fontSize: 20),
+                            onChanged: (_) {
+                              setState(() {
+                                _showUsernameError = false;
+                              });
+                            },
                             decoration: InputDecoration(
                               hintText: 'Enter your name',
+                              errorText: _showUsernameError
+                                  ? 'User cannot be empty '
+                                  : null,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -101,12 +120,24 @@ class _ScreenLoginState extends State<ScreenLogin> {
                         child: Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.black)),
+                              border: Border.all(
+                                  color: _showPasswordError
+                                      ? Colors.red
+                                      : Colors.transparent)),
                           child: TextField(
+                            onChanged: (_) {
+                              setState(() {
+                                _showPasswordError = false;
+                              });
+                            },
+                            controller: _userpasswordController,
                             obscureText: true,
                             style: TextStyle(fontSize: 20),
                             decoration: InputDecoration(
                               hintText: 'Enter your Password',
+                              errorText: _showPasswordError
+                                  ? 'Password cannot be empty'
+                                  : null,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -118,11 +149,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
                         height: 50,
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ScreenMainHome()));
+                        onPressed: () async {
+                          await onLoginButtonPressed();
                         },
                         child: Text(
                           'Log in',
@@ -189,5 +217,45 @@ class _ScreenLoginState extends State<ScreenLogin> {
         ),
       ),
     );
+  }
+
+  Future<void> onLoginButtonPressed() async {
+    final username = _usernameController.text.trim();
+    final userpassword = _userpasswordController.text.trim();
+
+    if (username.isEmpty) {
+      setState(() {
+        _showUsernameError = true;
+      });
+    }
+    if (userpassword.isEmpty) {
+      setState(() {
+        _showPasswordError = true;
+      });
+    }
+
+    if (username.isNotEmpty && userpassword.isNotEmpty) {
+      final authService = AuthService();
+      final loggedIn = await authService.login(username, userpassword);
+      if (loggedIn) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Welcome back'),
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.green,
+        ));
+
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => ScreenMainHome()));
+        getAllTransactions();
+      } else {
+        // Handle invalid login credentials
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content:
+              Text('Invalid email or password . You can SIGNUP into our app'),
+          duration: Duration(seconds: 3),
+        ));
+      }
+    }
   }
 }

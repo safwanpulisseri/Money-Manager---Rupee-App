@@ -393,6 +393,8 @@ class ScreenAccount extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
+                        // final authService = AuthService();
+                        //  await authService.logout();
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
