@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:rupee_app/controller/db_functions.dart';
+import 'package:rupee_app/models/category.dart';
+import 'package:rupee_app/models/transaction.dart';
 import 'package:rupee_app/screens/home/screen_home.dart';
 import 'package:rupee_app/screens/widgets/list.dart';
 
@@ -119,16 +122,32 @@ class _ScreenStatisticsState extends State<ScreenStatistics> {
             ),
           ),
           // List of Top Transactions
-          // Expanded(
-          //   child: ListView.builder(
-          //     itemCount: 4,
-          //     itemBuilder: (context, index) {
-          //       return ScreenList(
-          //         index: index,
-          //       ); // Assuming that the `transactionKey` and `index` are not needed in the constructor.
-          //     },
-          //   ),
-          // ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: transactionListNotifier.value.length,
+                itemBuilder: (context, index) {
+                  final TransactionModel transaction =
+                      transactionListNotifier.value[index];
+                  final CategoryModel category = transaction.category;
+                  final DateTime date = transaction.date;
+
+                  return ListTile(
+                    title: Text(
+                      category.name,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    ),
+                    subtitle: Text('${date.day}/${date.month}/${date.year}'),
+                    leading: CircleAvatar(
+                      backgroundImage: AssetImage(category.imagePath),
+                    ),
+                    trailing: Text(
+                      '${transaction.amount}',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  );
+                }),
+          )
         ],
       ),
     );

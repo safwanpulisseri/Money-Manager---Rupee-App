@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:rupee_app/controller/db_functions.dart';
+import 'package:rupee_app/models/category.dart';
+import 'package:rupee_app/models/transaction.dart';
 import 'package:rupee_app/screens/home/main_home.dart';
 
 class ScreenSeeAllTransaction extends StatefulWidget {
@@ -134,15 +137,47 @@ class _ScreenSeeAllTransactionState extends State<ScreenSeeAllTransaction> {
                           )
                         ],
                       ),
-                      Flexible(
-                        child: ListView.builder(
-                          itemCount: 4,
-                          itemBuilder: (context, index) {
-                            final transactionKey = Key('transaction_$index');
-                            return list_of_categories(transactionKey, index);
-                          },
+                      Slidable(
+                        startActionPane:
+                            ActionPane(motion: ScrollMotion(), children: [
+                          SlidableAction(
+                            backgroundColor: Colors.blue,
+                            onPressed: (ctx) {},
+                            icon: Icons.edit,
+                            label: 'Edit',
+                          )
+                        ]),
+                        child: Expanded(
+                          child: ListView.builder(
+                              itemCount: transactionListNotifier.value.length,
+                              itemBuilder: (context, index) {
+                                final TransactionModel transaction =
+                                    transactionListNotifier.value[index];
+                                final CategoryModel category =
+                                    transaction.category;
+                                final DateTime date = transaction.date;
+
+                                return ListTile(
+                                  title: Text(
+                                    category.name,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  subtitle: Text(
+                                      '${date.day}/${date.month}/${date.year}'),
+                                  leading: CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage(category.imagePath),
+                                  ),
+                                  trailing: Text(
+                                    '${transaction.amount}',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                );
+                              }),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),

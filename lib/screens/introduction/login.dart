@@ -246,7 +246,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => ScreenMainHome()));
-        getAllTransactions();
+        //getAllTransactions();
       } else {
         // Handle invalid login credentials
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
