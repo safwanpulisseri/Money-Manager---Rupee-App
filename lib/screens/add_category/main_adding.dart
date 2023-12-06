@@ -1,6 +1,7 @@
 // main_adding.dart
 //import 'dart:ffi';
 import 'dart:ffi';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rupee_app/controller/db_functions.dart';
 //import 'package:rupee_app/controller/db_functions.dart';
@@ -25,19 +26,48 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
     // Retrieve data from user input
     final double amount = double.parse(amount_C.text);
     final String description = explain_C.text;
-    final String category = selectedItem ??
+    final String categoryName = selectedItem ??
         "Default Category"; // Use a default if no category selected
     final DateTime date = DateTime.now();
+
+    // Find the CategoryModel for the selected category
+    final CategoryModel selectedCategory = _findCategoryByName(categoryName);
 
     // Create a TransactionModel instance
     final TransactionModel newTransaction = TransactionModel(
       amount: amount,
       description: description,
       date: date,
-      category: CategoryModel(name: category, imagePath: ""),
+      category: selectedCategory,
     );
     await addTransaction(newTransaction);
     print('adding complete');
+  }
+
+  CategoryModel _findCategoryByName(String categoryName) {
+    List<CategoryModel> categories = [
+      CategoryModel(name: "Wages", imagePath: "assets/Income1.png"),
+      CategoryModel(name: "Pension", imagePath: "assets/Income2.png"),
+      CategoryModel(name: "Bonus", imagePath: "assets/Icome3.png"),
+      CategoryModel(name: "Dividend", imagePath: "assets/Income4.png"),
+      // Add other income categories
+
+      CategoryModel(name: "Bills", imagePath: "assets/Bills1.png"),
+      CategoryModel(name: "Health", imagePath: "assets/Bills2.png"),
+      CategoryModel(name: "Shopping", imagePath: "assets/Bills3.png"),
+      CategoryModel(name: "Recharge", imagePath: "assets/Bills4.png"),
+      // Add other expense categories
+
+      // Add more categories as needed
+    ];
+    // Find the CategoryModel with the specified name
+    CategoryModel selectedCategory = categories.firstWhere(
+        (category) => category.name == categoryName,
+        orElse: () => CategoryModel(
+            name: categoryName,
+            imagePath:
+                "")); //add Default IMage "assets/default_category_image.png"
+    return selectedCategory;
   }
 
   void _handleRadioValueChanged(String value) {
@@ -63,7 +93,7 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
     "Wages",
     "Pension",
     "Bonus",
-    "Divident",
+    "Dividend",
   ];
   int index = 0;
 
@@ -78,12 +108,6 @@ class _ScreenMainAddingState extends State<ScreenMainAdding> {
     });
   }
 
-  List<String> categoryImages2 = [
-    'assets/Screenshot_2023-11-19_at_4.01.38_PM-removebg-preview.png',
-    'assets/Screenshot_2023-11-19_at_4.01.58_PM-removebg-preview.png',
-    'assets/Screenshot_2023-11-19_at_4.02.04_PM-removebg-preview.png',
-    'assets/Screenshot_2023-11-19_at_4.02.09_PM-removebg-preview.png',
-  ];
   List<String> expenseImages = [
     'assets/Bills1.png',
     'assets/Bills2.png',

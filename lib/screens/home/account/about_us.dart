@@ -43,7 +43,7 @@ class ScreenAboutUs extends StatelessWidget {
                                 color: Colors.white,
                                 fontSize: 25,
                                 fontWeight: FontWeight.w600),
-                          )
+                          ),
                         ],
                       ),
                     ),

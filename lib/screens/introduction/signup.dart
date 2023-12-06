@@ -7,7 +7,8 @@ import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rupee_app/models/user.dart';
 import 'package:rupee_app/screens/home/main_home.dart';
-import 'package:rupee_app/screens/introduction/login.dart';
+
+String? userPic;
 
 class ScreenSignup extends StatefulWidget {
   const ScreenSignup({Key? key}) : super(key: key);
@@ -18,8 +19,7 @@ class ScreenSignup extends StatefulWidget {
 
 class _ScreenSignupState extends State<ScreenSignup> {
   final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+
   String _selectedCountryCode = 'IN';
   File? _selectedImage;
 
@@ -35,41 +35,27 @@ class _ScreenSignupState extends State<ScreenSignup> {
             children: [
               SizedBox(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 60,
+                    Image.asset(
+                      'assets/Login_logo.png',
+                      height: 150,
+                      width: 150,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ScreenLogin(),
-                          ),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Icon(
-                            Icons.arrow_back_ios,
-                            color: Colors.white,
-                          ),
-                          Text(
-                            'Back',
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
+                    Text(
+                      'Please finish to continue and get the ',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      'best from our app',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 5,
                     ),
                   ],
                 ),
-                height: 110,
+                height: 300,
               ),
               ClipRRect(
                 borderRadius: BorderRadius.only(
@@ -78,14 +64,57 @@ class _ScreenSignupState extends State<ScreenSignup> {
                 ),
                 child: Container(
                   color: Colors.white,
-                  height: 780,
+                  height: 700,
                   width: double.infinity,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        height: 40,
+                      ),
                       GestureDetector(
                         onTap: () async {
-                          _pickImage();
+                          showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return AlertDialog(
+                                backgroundColor: Colors.black,
+                                content: Text(
+                                  'Choose Image From ',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                actions: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          _pickImage();
+                                        },
+                                        icon: Icon(
+                                          Icons.image,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          _pickImageFromCamera();
+                                        },
+                                        icon: Icon(
+                                          Icons.camera,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              );
+                            },
+                          );
                         },
                         child: Column(
                           children: [
@@ -172,28 +201,6 @@ class _ScreenSignupState extends State<ScreenSignup> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 25),
                         child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: TextField(
-                            controller: _emailController,
-                            style: TextStyle(fontSize: 20),
-                            decoration: InputDecoration(
-                              hintText: 'Enter your Email',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: Container(
                           height: 70,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -208,35 +215,12 @@ class _ScreenSignupState extends State<ScreenSignup> {
                       SizedBox(
                         height: 30,
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: TextField(
-                            controller: _passwordController,
-                            style: TextStyle(fontSize: 20),
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your Password',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
                       ElevatedButton(
                         onPressed: () async {
                           await _onSignupButtonClicked(context);
                         },
                         child: Text(
-                          'Sign up',
+                          'FINISH',
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w700,
@@ -294,26 +278,34 @@ class _ScreenSignupState extends State<ScreenSignup> {
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(
+    final userImage = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
 
-    if (pickedFile != null) {
+    if (userImage != null) {
+      setState(
+        () {
+          _selectedImage = File(userImage.path);
+          userPic = _selectedImage!.path;
+        },
+      );
+    }
+  }
+
+  Future<void> _pickImageFromCamera() async {
+    final userImage = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (userImage != null) {
       setState(() {
-        _selectedImage = File(pickedFile.path);
+        _selectedImage = File(userImage.path);
+        userPic = _selectedImage!.path;
       });
     }
   }
 
   Future<void> _onSignupButtonClicked(BuildContext context) async {
     final String name = _nameController.text.trim();
-    final String email = _emailController.text.trim();
-    final String password = _passwordController.text.trim();
 
-    if (_selectedImage == null ||
-        name.isEmpty ||
-        email.isEmpty ||
-        password.isEmpty) {
+    if (_selectedImage == null || name.isEmpty) {
       // Show an error message or handle the case where any field is empty
       return;
     }
@@ -324,9 +316,7 @@ class _ScreenSignupState extends State<ScreenSignup> {
     // Save user data to Hive
     final UserModel user = UserModel(
       name: name,
-      email: email,
       country: _selectedCountryCode,
-      password: password,
       image: imageData,
     );
 

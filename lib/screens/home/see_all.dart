@@ -137,18 +137,18 @@ class _ScreenSeeAllTransactionState extends State<ScreenSeeAllTransaction> {
                           )
                         ],
                       ),
-                      Slidable(
-                        startActionPane:
-                            ActionPane(motion: ScrollMotion(), children: [
-                          SlidableAction(
-                            backgroundColor: Colors.blue,
-                            onPressed: (ctx) {},
-                            icon: Icons.edit,
-                            label: 'Edit',
-                          )
-                        ]),
-                        child: Expanded(
-                          child: ListView.builder(
+                      Expanded(
+                        child: Slidable(
+                            startActionPane:
+                                ActionPane(motion: ScrollMotion(), children: [
+                              SlidableAction(
+                                backgroundColor: Colors.blue,
+                                onPressed: (ctx) {},
+                                icon: Icons.edit,
+                                label: 'Edit',
+                              )
+                            ]),
+                            child: ListView.builder(
                               itemCount: transactionListNotifier.value.length,
                               itemBuilder: (context, index) {
                                 final TransactionModel transaction =
@@ -167,16 +167,24 @@ class _ScreenSeeAllTransactionState extends State<ScreenSeeAllTransaction> {
                                   subtitle: Text(
                                       '${date.day}/${date.month}/${date.year}'),
                                   leading: CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage(category.imagePath),
+                                    backgroundColor: Colors.transparent,
+                                    radius: 30,
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        category.imagePath,
+                                        // height: 100,
+                                        // width: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                   trailing: Text(
                                     '${transaction.amount}',
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 );
-                              }),
-                        ),
+                              },
+                            )),
                       )
                     ],
                   ),
@@ -189,53 +197,53 @@ class _ScreenSeeAllTransactionState extends State<ScreenSeeAllTransaction> {
     );
   }
 
-  Slidable list_of_categories(Key transactionKey, int index) {
-    return Slidable(
-      key: transactionKey,
-      startActionPane: ActionPane(
-        motion: ScrollMotion(),
-        children: [
-          SlidableAction(
-            backgroundColor: Colors.red,
-            onPressed: (ctx) {},
-            icon: Icons.delete,
-            label: 'Delete',
-          ),
-        ],
-      ),
-      endActionPane: ActionPane(motion: ScrollMotion(), children: [
-        SlidableAction(
-          backgroundColor: Colors.blue,
-          onPressed: (ctx) {},
-          icon: Icons.edit,
-          label: 'Edit',
-        )
-      ]),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.transparent,
-          backgroundImage: AssetImage(incomeImages[index]),
-        ),
-        title: Text(
-          'Transaction $index',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-        ),
-        subtitle: Text('Oct 22, 2021'),
-        trailing: Text(
-          '+10.000',
-          style: TextStyle(color: Colors.green, fontSize: 20),
-        ),
-        onTap: () {
-          // Action to perform when the item is tapped
-        },
-      ),
-    );
-  }
+  // Slidable list_of_categories(Key transactionKey, int index) {
+  //   return Slidable(
+  //     key: transactionKey,
+  //     startActionPane: ActionPane(
+  //       motion: ScrollMotion(),
+  //       children: [
+  //         SlidableAction(
+  //           backgroundColor: Colors.red,
+  //           onPressed: (ctx) {},
+  //           icon: Icons.delete,
+  //           label: 'Delete',
+  //         ),
+  //       ],
+  //     ),
+  //     endActionPane: ActionPane(motion: ScrollMotion(), children: [
+  //       SlidableAction(
+  //         backgroundColor: Colors.blue,
+  //         onPressed: (ctx) {},
+  //         icon: Icons.edit,
+  //         label: 'Edit',
+  //       )
+  //     ]),
+  //     child: ListTile(
+  //       leading: CircleAvatar(
+  //         backgroundColor: Colors.transparent,
+  //         backgroundImage: AssetImage(incomeImages[index]),
+  //       ),
+  //       title: Text(
+  //         'Transaction $index',
+  //         style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+  //       ),
+  //       subtitle: Text('Oct 22, 2021'),
+  //       trailing: Text(
+  //         '+10.000',
+  //         style: TextStyle(color: Colors.green, fontSize: 20),
+  //       ),
+  //       onTap: () {
+  //         // Action to perform when the item is tapped
+  //       },
+  //     ),
+  //   );
+  // }
 
-  List<String> incomeImages = [
-    'assets/Income1.png',
-    'assets/Income2.png',
-    'assets/Icome3.png',
-    'assets/Income4.png',
-  ];
+  // List<String> incomeImages = [
+  //   'assets/Income1.png',
+  //   'assets/Income2.png',
+  //   'assets/Icome3.png',
+  //   'assets/Income4.png',
+  // ];
 }

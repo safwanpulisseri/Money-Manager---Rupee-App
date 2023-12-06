@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rupee_app/screens/introduction/login.dart';
+import 'package:rupee_app/screens/introduction/signup.dart';
 //import 'package:flutter_application_3/screens/Indroduction/Login.dart';
 
 class ScreenIntro extends StatelessWidget {
@@ -100,7 +101,7 @@ class ScreenIntro extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ScreenLogin(),
+                    builder: (context) => ScreenSignup(),
                   ),
                 );
               },

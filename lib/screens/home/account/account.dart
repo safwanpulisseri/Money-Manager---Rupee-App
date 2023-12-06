@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rupee_app/controller/db_functions.dart';
 import 'package:rupee_app/screens/home/account/about_us.dart';
 import 'package:rupee_app/screens/home/account/credit_card.dart';
 import 'package:rupee_app/screens/home/account/how_to_use.dart';
@@ -72,15 +73,15 @@ class ScreenAccount extends StatelessWidget {
                                 ),
                               ),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  border:
-                                      Border.all(width: 3, color: Colors.black),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        offset: Offset(2, 2),
-                                        color: Colors.grey)
-                                  ]),
+                                borderRadius: BorderRadius.circular(25),
+                                border:
+                                    Border.all(width: 3, color: Colors.black),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(2, 2), color: Colors.grey)
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -95,9 +96,6 @@ class ScreenAccount extends StatelessWidget {
                                   fontWeight: FontWeight.bold, fontSize: 25),
                             )
                           ],
-                        ),
-                        Row(
-                          children: [Text('name123@gmail.com')],
                         ),
                         GestureDetector(
                           onTap: () {
@@ -393,8 +391,7 @@ class ScreenAccount extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // final authService = AuthService();
-                        //  await authService.logout();
+                        logout();
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -411,7 +408,7 @@ class ScreenAccount extends StatelessWidget {
                           children: [
                             Container(
                               child: Icon(
-                                Icons.logout,
+                                Icons.delete_forever,
                                 size: 30,
                                 color: Colors.white,
                               ),
@@ -426,7 +423,7 @@ class ScreenAccount extends StatelessWidget {
                               width: 20,
                             ),
                             Text(
-                              'Logout',
+                              'Clear All',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 25,
@@ -450,5 +447,10 @@ class ScreenAccount extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> logout() async {
+    transactionListNotifier.value.clear();
+    transactionListNotifier.notifyListeners();
   }
 }

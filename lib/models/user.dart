@@ -9,24 +9,17 @@ part 'user.g.dart';
 @HiveType(typeId: 3)
 class UserModel {
   @HiveField(0)
-  final String name;
+  final Uint8List image;
 
   @HiveField(1)
-  final String email;
+  final String name;
 
   @HiveField(2)
   final String country;
 
-  @HiveField(3)
-  final String password;
-
-  @HiveField(4)
-  final Uint8List image;
-
-  UserModel(
-      {required this.name,
-      required this.email,
-      required this.country,
-      required this.password,
-      required this.image});
+  UserModel({
+    required this.image,
+    required this.name,
+    required this.country,
+  });
 }

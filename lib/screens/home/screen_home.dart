@@ -6,6 +6,7 @@ import 'package:rupee_app/models/category.dart';
 import 'package:rupee_app/models/transaction.dart';
 import 'package:rupee_app/screens/home/account/account.dart';
 import 'package:rupee_app/screens/home/see_all.dart';
+import 'package:rupee_app/screens/introduction/signup.dart';
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
@@ -18,26 +19,26 @@ class _ScreenHomeState extends State<ScreenHome> {
   late String _userName = '';
   late String _userPhoto = '';
 
-  Future<void> _getUserInfoFromDatabase() async {
-    try {
-      // Fetch user information from the database
-      Map<String, dynamic> userInfo =
-          await DbFunctions.getUserInfoFromDatabase();
+  // Future<void> _getUserInfoFromDatabase() async {
+  //   try {
+  //     // Fetch user information from the database
+  //     Map<String, dynamic> userInfo =
+  //         await DbFunctions.getUserInfoFromDatabase();
 
-      setState(() {
-        _userName = userInfo['name'] ?? '';
-        _userPhoto = userInfo['photo'] ?? '';
-      });
-    } catch (e) {
-      print('Error fetching user information: $e');
-    }
-  }
+  //     setState(() {
+  //       _userName = userInfo['name'] ?? '';
+  //       _userPhoto = userInfo['photo'] ?? '';
+  //     });
+  //   } catch (e) {
+  //     print('Error fetching user information: $e');
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
     getAllTransactions(); // Fetch transactions when the screen initializes
-    _getUserInfoFromDatabase();
+    // _getUserInfoFromDatabase();
   }
 
   @override
@@ -127,7 +128,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: Image.asset(
-                                    _userPhoto, //User's Photo
+                                    userPic!, //User's Photo
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -317,30 +318,40 @@ class _ScreenHomeState extends State<ScreenHome> {
                 // List of Recent Transactions
                 Expanded(
                   child: ListView.builder(
-                      itemCount: transactionListNotifier.value.length,
-                      itemBuilder: (context, index) {
-                        final TransactionModel transaction =
-                            transactionListNotifier.value[index];
-                        final CategoryModel category = transaction.category;
-                        final DateTime date = transaction.date;
+                    itemCount: transactionListNotifier.value.length,
+                    itemBuilder: (context, index) {
+                      final TransactionModel transaction =
+                          transactionListNotifier.value[index];
+                      final CategoryModel category = transaction.category;
+                      final DateTime date = transaction.date;
 
-                        return ListTile(
-                          title: Text(
-                            category.name,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500),
+                      return ListTile(
+                        title: Text(
+                          category.name,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        ),
+                        subtitle:
+                            Text('${date.day}/${date.month}/${date.year}'),
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          radius: 30,
+                          child: ClipOval(
+                            child: Image.asset(
+                              category.imagePath,
+                              // height: 100,
+                              // width: 100,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          subtitle:
-                              Text('${date.day}/${date.month}/${date.year}'),
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage(category.imagePath),
-                          ),
-                          trailing: Text(
-                            '${transaction.amount}',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        );
-                      }),
+                        ),
+                        trailing: Text(
+                          '${transaction.amount}',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      );
+                    },
+                  ),
                 )
               ],
             ),
