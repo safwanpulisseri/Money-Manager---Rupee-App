@@ -94,6 +94,7 @@ class _ScreenSignupState extends State<ScreenSignup> {
                                       IconButton(
                                         onPressed: () {
                                           _pickImage();
+                                          Navigator.pop(context);
                                         },
                                         icon: Icon(
                                           Icons.image,
@@ -103,9 +104,10 @@ class _ScreenSignupState extends State<ScreenSignup> {
                                       IconButton(
                                         onPressed: () {
                                           _pickImageFromCamera();
+                                          Navigator.pop(context);
                                         },
                                         icon: Icon(
-                                          Icons.camera,
+                                          Icons.camera_alt_rounded,
                                           color: Colors.white,
                                         ),
                                       )
